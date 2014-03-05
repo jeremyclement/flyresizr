@@ -6,6 +6,15 @@ function exit_message($code, $msg){
     die($msg);
 }
 
+// CHECK REQUEST
+if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
+    exit_message(400,"input filename and size must be specified");
+}
+$img_src_name = $_GET["name"];
+$img_dest_size = str_replace("*x", "%", $_GET['size']);
+$img_dest_ext = $_GET["ext"];
+
+// SET PATHS
 preg_match("/^\/(.*\/)?([^\/]+)$/", $_SERVER['REDIRECT_SCRIPT_URL'], $matches);
 $PATH = $matches[1];
 $FILENAME = $matches[2];
@@ -22,14 +31,6 @@ if(is_file($img_local_path)){
     echo $buffer;
     exit();
 }
-
-// CHECK REQUEST
-if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
-    exit_message(400,"input filename and size must be specified");
-}
-$img_src_name = $_GET["name"];
-$img_dest_size = str_replace("*x", "%", $_GET['size']);
-$img_dest_ext = $_GET["ext"];
 
 // CHECK SOURCE IMAGE
 $img_src_path = $_SERVER['DOCUMENT_ROOT'] . "/$PATH$img_src_name.$img_dest_ext";
