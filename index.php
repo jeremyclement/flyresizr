@@ -45,29 +45,19 @@ if(!is_dir($img_dest_dir)){
     umask($old);
 }
 $img_dest_path = $img_dest_dir . "$img_src_name-$img_dest_size.$img_dest_ext";
+
+// RESIZE
 if(!is_file($img_dest_path)){
     $return = exec("convert -filter Lanczos -background none -resize ". escapeshellarg($img_dest_size) ." ". escapeshellarg($img_src_path) . " " . escapeshellarg($img_dest_path));
 }
 if(!is_file($img_dest_path)){
     exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext'");
 }
+
+// RETURN RESIZED IMAGE
 $buffer = file_get_contents($img_dest_path);
 $finfo = new finfo(FILEINFO_MIME_TYPE);
 $mime = $finfo->buffer($buffer);
 header("Content-Type: $mime");
 echo $buffer;
-exit();
-
-
-
-
 ?>
-
-
-<pre>
-<?php
-print_r($img_dest_dir);
-print_r($_GET);
-print_r($_SERVER);
-?>
-</pre>
