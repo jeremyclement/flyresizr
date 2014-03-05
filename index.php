@@ -28,7 +28,7 @@ if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
     exit_message(400,"input filename and size must be specified");
 }
 $img_src_name = $_GET["name"];
-$img_dest_size = $_GET['size'];
+$img_dest_size = str_replace("*x", "%", $_GET['size']);
 $img_dest_ext = $_GET["ext"];
 
 // CHECK SOURCE IMAGE
@@ -47,11 +47,15 @@ if(!is_dir($img_dest_dir)){
 $img_dest_path = $img_dest_dir . "$img_src_name-$img_dest_size.$img_dest_ext";
 
 // RESIZE
+$command = "convert -filter Lanczos -background none -resize "
+    . escapeshellarg($img_dest_size) ." "
+    . escapeshellarg($img_src_path) . " " 
+    . escapeshellarg($img_dest_path);
 if(!is_file($img_dest_path)){
-    $return = exec("convert -filter Lanczos -background none -resize ". escapeshellarg($img_dest_size) ." ". escapeshellarg($img_src_path) . " " . escapeshellarg($img_dest_path));
+    $return = exec($command);
 }
 if(!is_file($img_dest_path)){
-    exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext'");
+    exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext' ($command)");
 }
 
 // RETURN RESIZED IMAGE
