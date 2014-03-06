@@ -63,7 +63,7 @@ if(!is_file($img_dest_path)){
 if(!is_file($img_dest_path)){
     exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext'
 $command
-$result");
+$return");
 }
 
 // RETURN RESIZED IMAGE
