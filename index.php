@@ -1,9 +1,14 @@
+<pre>
+<?php
+print_r($_SERVER);
+?>
+</pre>
 <?php
 include_once("includes/exception.php");
 
 function exit_message($code, $msg){
     http_response_code($code);
-    die($msg);
+    die("<pre>$msg</pre>");
 }
 
 // CHECK REQUEST
@@ -56,7 +61,9 @@ if(!is_file($img_dest_path)){
     $return = exec($command);
 }
 if(!is_file($img_dest_path)){
-    exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext' ($command)");
+    exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext'
+$command
+$result");
 }
 
 // RETURN RESIZED IMAGE
@@ -66,3 +73,4 @@ $mime = $finfo->buffer($buffer);
 header("Content-Type: $mime");
 echo $buffer;
 ?>
+
