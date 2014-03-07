@@ -3,6 +3,7 @@ include_once("includes/exception.php");
 
 function exit_message($code, $msg){
     http_response_code($code);
+    echo "<pre>".print_r($_SERVER,true)."</pre>";
     die("<pre>$msg</pre>");
 }
 
@@ -10,12 +11,13 @@ function exit_message($code, $msg){
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
     exit_message(400,"input filename and size must be specified");
 }
-$img_src_dir = $_GET["path"];
 $img_src_name = $_GET["name"];
 $img_dest_size = $_GET['size'];
 $img_dest_ext = $_GET["ext"];
 
 // SET CACHE PATH
+preg_match("/^\/(.*\/)?[^\/]+(\?.*)?$/", $_SERVER['REQUEST_URI'], $matches);
+$img_src_dir = $matches[1];
 preg_match("/^\/(.*\/)?[^\/]+(\?.*)?$/", $_SERVER['PHP_SELF'], $matches);
 $CACHE = $matches[1].".cache/";
 
