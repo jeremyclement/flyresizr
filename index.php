@@ -10,19 +10,17 @@ function exit_message($code, $msg){
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
     exit_message(400,"input filename and size must be specified");
 }
+$img_src_dir = $_GET["path"];
 $img_src_name = $_GET["name"];
-$img_dest_size = str_replace("*x", "%", $_GET['size']);
+$img_dest_size = $_GET['size'];
 $img_dest_ext = $_GET["ext"];
 
-// SET PATHS
-preg_match("/^\/(.*\/)?([^\/]+)$/", $_SERVER['REDIRECT_SCRIPT_URL'], $matches);
-$PATH = $matches[1];
-$FILENAME = $matches[2];
-preg_match("/^\/(.*\/)?[^\/]+$/", $_SERVER['PHP_SELF'], $matches);
+// SET CACHE PATH
+preg_match("/^\/(.*\/)?[^\/]+(\?.*)?$/", $_SERVER['PHP_SELF'], $matches);
 $CACHE = $matches[1].".cache/";
 
 // CHECK IF ALREADY EXISTS
-$img_local_path = $_SERVER['DOCUMENT_ROOT'] . "/$PATH$FILENAME";
+$img_local_path = $_SERVER['DOCUMENT_ROOT'] . "/$img_src_dir$img_src_name-$img_dest_size.$img_dest_ext";
 if(is_file($img_local_path)){
     $buffer = file_get_contents($img_local_path);
     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -33,13 +31,13 @@ if(is_file($img_local_path)){
 }
 
 // CHECK SOURCE IMAGE
-$img_src_path = $_SERVER['DOCUMENT_ROOT'] . "/$PATH$img_src_name.$img_dest_ext";
+$img_src_path = $_SERVER['DOCUMENT_ROOT'] . "/$img_src_dir$img_src_name.$img_dest_ext";
 if(!is_file($img_src_path)){
-    exit_message(400,"input file '$PATH $img_src_name.$img_dest_ext' does not exist");
+    exit_message(400,"input files '$img_local_path' and '$img_src_path' do not exist");
 }
 
 // SET DESTINATION IN CACHE
-$img_dest_dir = $_SERVER['DOCUMENT_ROOT'] . "/$CACHE$PATH";
+$img_dest_dir = $_SERVER['DOCUMENT_ROOT'] . "/$CACHE/$img_src_dir";
 if(!is_dir($img_dest_dir)){
     $old = umask(0);
     mkdir($img_dest_dir,02775,true);
