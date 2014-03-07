@@ -35,7 +35,7 @@ if(is_file($img_local_path)){
 // CHECK SOURCE IMAGE
 $img_src_path = $_SERVER['DOCUMENT_ROOT'] . "/$PATH$img_src_name.$img_dest_ext";
 if(!is_file($img_src_path)){
-    exit_message(400,"input file '$PATH$img_src_name.$img_dest_ext' does not exist");
+    exit_message(400,"input file '$PATH $img_src_name.$img_dest_ext' does not exist");
 }
 
 // SET DESTINATION IN CACHE
