@@ -3,7 +3,7 @@ include_once("includes/exception.php");
 
 function exit_message($code, $msg){
     http_response_code($code);
-    die($msg);
+    die("<pre>$msg</pre>");
 }
 
 // CHECK REQUEST
@@ -50,11 +50,14 @@ $command = "convert -filter Lanczos -background none -resize "
     . escapeshellarg($img_dest_size) ." "
     . escapeshellarg($img_src_path) . " " 
     . escapeshellarg($img_dest_path);
+
 if(!is_file($img_dest_path)){
     $return = exec($command);
-}
-if(!is_file($img_dest_path)){
-    exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext' ($command)");
+    if(!is_file($img_dest_path)){
+        exit_message(500,"unable to convert '$img_src_name.$img_dest_ext' to '$img_src_name-$img_dest_size.$img_dest_ext'
+    $command
+    $return");
+    }
 }
 
 // RETURN RESIZED IMAGE
@@ -64,3 +67,4 @@ $mime = $finfo->buffer($buffer);
 header("Content-Type: $mime");
 echo $buffer;
 ?>
+
