@@ -11,46 +11,48 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 //Capture des exceptions non catchées
 function exception_handler($e)
 {
-    afficheException($e, true);
+    echo exception_to_html($e, "unexpected");
 }
 
-function afficheException($e, $innatendu = false)
+function exception_to_html($e, $class = "")
 {
-    if ($innatendu){
-        echo "<div class='exception'>\n";
-    }
-    else{
-        echo "<div class='exception catch'>\n";
-    }
-    echo "\t<h3>" . get_class($e) . "</h3>\n";
-    echo "\t<ul>\n";
-    echo "\t\t<li class='ex_message'>" . $e->getMessage() . "</li>\n";
-    echo "\t\t<li class='ex_file'>in \"<span>" . $e->getFile() . "</span>\" (<span>ligne " . $e->getLine() . "</span>)</li>\n";
-    echo "\t\t<li class='ex_trace'><span>Stack Trace :</span><ul>\n";
+    $html = "<div class='exception $class'>\n";
+    $html .= "\t<h3>" . get_class($e) . "</h3>\n";
+    $html .= "\t<ul>\n";
+    $html .= "\t\t<li class='ex_message'>" . $e->getMessage() . "</li>\n";
+    $html .= "\t\t<li class='ex_file'>in \"<span>" . $e->getFile() . "</span>\" (<span>ligne " . $e->getLine() . "</span>)</li>\n";
+    $html .= "\t\t<li class='ex_trace'><span>Stack Trace :</span><ul>\n";
     foreach ($e->getTrace() as $num => $trace)
     {
-        echo "\t\t<li><span>$num</span><ul>\n";
+        $html .= "\t\t<li><span>$num</span><ul>\n";
         foreach ($trace as $key => $value)
         {
-            echo "\t\t\t<li><span>$key : </span>";
+            $html .= "\t\t\t<li><span>$key : </span>";
             if (is_array($value))
             {
-                echo "\t\t\t\t<pre>\n";
+                $html .= "\t\t\t\t<pre>\n";
                 foreach ($value as $k => $v)
                 {
                     $v = print_r($v,true);
-                    echo "arg$k : $v\n";
+                    $html .= "arg$k : $v\n";
                 }
-                echo "\t\t\t\t</pre>\n";
+                $html .= "\t\t\t\t</pre>\n";
             }
             else
-            echo "$value";
-            echo "</li>\n";
+            $html .= "$value";
+            $html .= "</li>\n";
         }
-        echo "\t\t</ul></li>\n";
+        $html .= "\t\t</ul></li>\n";
     }
-    echo "\t</ul>\n";
-    echo "</div>\n";
+    $html .= "\t</ul>\n";
+    $html .= "</div>\n";
+    return $html;
+}
+
+function exit_message($code, $msg){
+    http_response_code($code);
+    echo "<pre>".print_r($_SERVER,true)."</pre>";
+    die("<pre>$msg</pre>");
 }
 
 if (!function_exists('http_response_code')) {

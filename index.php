@@ -1,12 +1,6 @@
 <?php
 include_once("includes/exception.php");
 
-function exit_message($code, $msg){
-    http_response_code($code);
-    echo "<pre>".print_r($_SERVER,true)."</pre>";
-    die("<pre>$msg</pre>");
-}
-
 // CHECK REQUEST
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
     exit_message(400,"input filename and size must be specified");
