@@ -1,0 +1,12 @@
+{
+    "name": "jeremyclement/flyresizer",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/jeremyclement/php-flyresizr.git"
+        }
+    ],
+    "require": {
+        "filp/whoops": "1.1.*@dev"
+    }
+}

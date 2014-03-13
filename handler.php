@@ -1,5 +1,5 @@
 <?php
-include_once("includes/exception.php");
+include_once("includes/http.php");
 
 // CHECK REQUEST
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
