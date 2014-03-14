@@ -6,6 +6,9 @@
             "url": "https://github.com/jeremyclement/php-flyresizr.git"
         }
     ],
+    "config" : {
+        "vendor-dir" : "packages"
+    },
     "require": {
         "filp/whoops": "1.1.*@dev"
     }
