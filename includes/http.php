@@ -2,8 +2,8 @@
 
 function exit_message($code, $msg){
     http_response_code($code);
-    echo "<pre>".print_r($_SERVER,true)."</pre>";
-    die("<pre>$msg</pre>");
+    echo "<pre>$msg</pre>";
+    die("<pre>".print_r($_SERVER,true)."</pre>");
 }
 
 if (!function_exists('http_response_code')) {
