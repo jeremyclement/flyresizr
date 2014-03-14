@@ -1,6 +1,11 @@
 <?php
 include_once("includes/http.php");
 
+include_once("packages/autoload.php");
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
 // CHECK REQUEST
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
     exit_message(400,"input filename and size must be specified");
@@ -12,8 +17,7 @@ $img_dest_ext = $_GET["ext"];
 // SET CACHE PATH
 preg_match("/^\/(.*\/)?[^\/]+(\?.*)?$/", $_SERVER['REQUEST_URI'], $matches);
 $img_src_dir = $matches[1];
-preg_match("/^\/(.*\/)?[^\/]+(\?.*)?$/", $_SERVER['PHP_SELF'], $matches);
-$CACHE = $matches[1].".cache/";
+$cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
 
 // CHECK IF ALREADY EXISTS
 $img_local_path = $_SERVER['DOCUMENT_ROOT'] . "/$img_src_dir$img_src_name-$img_dest_size.$img_dest_ext";
@@ -33,7 +37,7 @@ if(!is_file($img_src_path)){
 }
 
 // SET DESTINATION IN CACHE
-$img_dest_dir = $_SERVER['DOCUMENT_ROOT'] . "/$CACHE/$img_src_dir";
+$img_dest_dir = "$cache_dir$img_src_dir";
 if(!is_dir($img_dest_dir)){
     $old = umask(0);
     mkdir($img_dest_dir,02775,true);
