@@ -1,15 +1,29 @@
 {
-    "name": "jeremyclement/flyresizer",
+    "name": "jijidev/flyresizer",
+    "description": "Handler for dynamically resize image if url is 'path/img-filename-<new_width>x<new-height>.png'",
+    "type": "project",
+    "keywords": ["image","resize","resizer","fly","automatic"],
+    "homepage": "https://github.com/jijidev/flyresizr",
+    "licence": "MIT",
+    "authors": [
+        {
+            "name": "Jeremy Clement",
+            "email": "le.mail.de.jeremy@gmail.com",
+            "homepage": "https://github.com/jeremyclement",
+            "role": "Developer"
+        }
+    ],
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/jeremyclement/php-flyresizr.git"
+            "url": "https://github.com/jijidev/flyresizr.git"
         }
     ],
     "config" : {
         "vendor-dir" : "packages"
     },
     "require": {
+        "php": ">=5.4.*",
         "filp/whoops": "1.1.*@dev"
     }
 }
