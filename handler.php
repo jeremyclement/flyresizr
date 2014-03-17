@@ -51,7 +51,7 @@ $cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $old = umask(0);
-@$cache->chmod(0775,0664); //TODO remove @ and increase Cache version if Gregwar accept pull request
+@$cache->chmod(0775,0664); //TODO remove @ and increase Gregwar/Cache version if pull request accepted (https://github.com/Gregwar/Cache/pull/7)
 
 // get cache or convert
 $img_out_path = $cache->getOrCreateFile($img_out,
