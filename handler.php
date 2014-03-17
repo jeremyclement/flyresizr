@@ -73,6 +73,9 @@ if(!printImage($img_out_path)){
     http_exit_message(500,"unable to convert '$img_src' to '$img_out'",false);
 }
 
+ob_flush();
+flush();
+
 //empty old cache
 \Gregwar\Cache\GarbageCollect::dropOldFiles($cache_dir, 30);
 ?>
