@@ -55,7 +55,7 @@ if(method_exists($cache, "chmod")){//TODO remove and increase Cache version if G
     $cache->chmod(0775,0664); 
 }
 
-// get cache or convert
+// get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
     array(
         'younger-than' => $img_src_path
@@ -82,4 +82,3 @@ flush();
 //empty old cache
 \Gregwar\Cache\GarbageCollect::dropOldFiles($cache_dir, 30);
 ?>
-
