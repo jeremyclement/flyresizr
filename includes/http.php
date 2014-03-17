@@ -1,6 +1,6 @@
 <?php
 
-function exit_message($code, $msg){
+function http_exit_message($code, $msg){
     http_response_code($code);
     echo "<pre>$msg</pre>";
     die("<pre>".print_r($_SERVER,true)."</pre>");
