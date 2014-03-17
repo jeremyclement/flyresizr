@@ -1,5 +1,5 @@
 {
-    "name": "jijidev/flyresizr",
+    "name": "jijidev/flyresizer",
     "description": "Handler for dynamically resize image with url specific format : 'path/img-filename-<new_width>x<new-height>.png'",
     "type": "project",
     "keywords": ["image","resize","resizer","fly","automatic"],
