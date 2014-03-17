@@ -1,6 +1,7 @@
 <?php
 include_once("includes/http.php");
-include_once("packages/autoload.php");
+@include_once("packages/autoload.php");
+@include_once("../../autoload.php");
 
 function printImage($path){
     if(!is_file($path)){
@@ -50,7 +51,7 @@ $cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $old = umask(0);
-$cache->chmod(0775,0664);
+@$cache->chmod(0775,0664); //TODO remove @ and increase Cache version if Gregwar accept pull request
 
 // get cache or convert
 $img_out_path = $cache->getOrCreateFile($img_out,
