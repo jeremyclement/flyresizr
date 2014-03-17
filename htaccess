@@ -1,5 +1,5 @@
 # Copy following lines in your .htaccess file,
-# and change php-flyresizr in RewriteRule if you named the folder differently
+# and change flyresizr in RewriteRule if you named the folder differently
 # -------------------------------------------
 
 <IfModule mod_rewrite.c>
@@ -7,6 +7,6 @@
     
     # flyresizR rewrite rule
     RewriteCond %{REQUEST_FILENAME} ^.+\.(jpe?g|png|gif)$ [NC]
-    RewriteRule ^(.*\/)?([^\/]+)-((\d+[*@]?x)|(x\d+)|(\d+x\d+[!^<>@]?))\.(jpe?g|png|gif)$ php-flyresizr/handler.php?name=$2&size=$3&ext=$7 [L]
+    RewriteRule ^(.*\/)?([^\/]+)-((\d+[*@]?x)|(x\d+)|(\d+x\d+[!^<>@]?))\.(jpe?g|png|gif)$ flyresizr/handler.php?name=$2&size=$3&ext=$7 [L]
     
 </IfModule>
