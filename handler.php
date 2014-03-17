@@ -49,6 +49,8 @@ if(!is_file($img_src_path)){
 $cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
+$old = umask(0);
+$cache->chmod(0775,0664);
 
 // get cache or convert
 $img_out_path = $cache->getOrCreateFile($img_out,
@@ -64,6 +66,7 @@ $img_out_path = $cache->getOrCreateFile($img_out,
             . escapeshellarg($cached_file);
         return exec($command);
     });
+umask($old);
 
 // return image
 if(printImage($img_out_path)){
@@ -71,36 +74,5 @@ if(printImage($img_out_path)){
 } else {
     http_exit_message(500,"unable to convert '$img_src' to '$img_out'");
 }
-
-// SET DESTINATION IN CACHE
-$img_out_dir = "$cache_dir$img_src_dir";
-if(!is_dir($img_out_dir)){
-    $old = umask(0);
-    mkdir($img_out_dir,02775,true);
-    umask($old);
-}
-$img_out_path = $img_out_dir . "$img_src_name-$img_out_size.$img_out_ext";
-
-// resize image
-$command = "convert -filter Lanczos -background none -resize "
-    . escapeshellarg($img_out_size) ." "
-    . escapeshellarg($img_src_path) . " " 
-    . escapeshellarg($img_out_path);
-
-if(!is_file($img_out_path)){
-    $return = exec($command);
-    if(!is_file($img_out_path)){
-        http_exit_message(500,"unable to convert '$img_src_name.$img_out_ext' to '$img_src_name-$img_out_size.$img_out_ext'
-    $command
-    $return");
-    }
-}
-
-// RETURN RESIZED IMAGE
-$buffer = file_get_contents($img_out_path);
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$mime = $finfo->buffer($buffer);
-header("Content-Type: $mime");
-echo $buffer;
 ?>
 
