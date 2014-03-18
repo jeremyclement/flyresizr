@@ -52,6 +52,7 @@ $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize(2);
 
+// change umask for 775 directories rights
 $old = umask(0002);
 // get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
