@@ -51,6 +51,7 @@ $cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize(2);
+
 $old = umask(0002);
 // get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
