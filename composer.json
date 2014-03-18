@@ -25,6 +25,6 @@
     "require": {
         "php": ">=5.4.2",
         "filp/whoops": ">=v1.0.10",
-        "gregwar/cache": ">=v1.0.7"
+        "gregwar/cache": ">=v1.0.7@dev"
     }
 }
