@@ -47,7 +47,7 @@ if(!is_file($img_src_path)){
 }
 
 // set cache
-$cache_dir = ".cache/".$_SERVER['HTTP_HOST'].'/';
+$cache_dir = $_SERVER['DOCUMENT_ROOT']."/.cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize(2);
