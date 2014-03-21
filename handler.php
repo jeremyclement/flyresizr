@@ -3,6 +3,13 @@ include_once("includes/http.php");
 @include_once("packages/autoload.php");
 @include_once("../../autoload.php");
 
+// set pretty debug
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+//$whoops->register();
+
+include_once("config.php");
+
 function printImage($path){
     if(!is_file($path)){
         return FALSE;
@@ -14,11 +21,6 @@ function printImage($path){
     echo $buffer;
     return filesize($path);
 }
-
-// set pretty debug
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
 
 // analyse $_REQUEST
 if(!isset($_GET["name"]) || !isset($_GET["size"]) || !isset($_GET["ext"])){
@@ -47,10 +49,9 @@ if(!is_file($img_src_path)){
 }
 
 // set cache
-$cache_dir = $_SERVER['DOCUMENT_ROOT']."/.cache/".$_SERVER['HTTP_HOST'].'/';
 $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
-$cache->setPrefixSize(2);
+$cache->setPrefixSize($cache_prefix_size);
 
 // change umask for 775 directories rights
 $old = umask(0002);
@@ -79,5 +80,5 @@ ob_flush();
 flush();
 
 //empty old cache
-\Gregwar\Cache\GarbageCollect::dropOldFiles($cache_dir, 30);
+\Gregwar\Cache\GarbageCollect::dropOldFiles($cache_dir, $cache_drop_delay);
 ?>
