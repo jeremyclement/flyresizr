@@ -4,9 +4,9 @@ include_once("includes/http.php");
 @include_once("../../autoload.php");
 
 // set pretty debug
-$whoops = new \Whoops\Run;
+/*$whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-//$whoops->register();
+$whoops->register();*/
 
 include_once("config.php");
 
