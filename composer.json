@@ -17,6 +17,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/jijidev/flyresizr.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:jijidev/Cache.git"
         }
     ],
     "config" : {
