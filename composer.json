@@ -13,6 +13,9 @@
             "role": "Developer"
         }
     ],
+    "config" : {
+        "vendor-dir" : "packages"
+    },
     "repositories": [
         {
             "type": "vcs",
@@ -23,9 +26,6 @@
             "url": "git@github.com:jijidev/Cache.git"
         }
     ],
-    "config" : {
-        "vendor-dir" : "packages"
-    },
     "require": {
         "php": ">=5.4.2",
         "filp/whoops": ">=v1.0.10",
