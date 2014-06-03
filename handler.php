@@ -50,11 +50,11 @@ if(!is_file($img_src_path)){
 
 // set cache
 $cache = new \Gregwar\Cache\Cache;
+$old = umask(0002);
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize($cache_prefix_size);
 
 // change umask for 775 directories rights
-$old = umask(0002);
 // get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
     array(
@@ -63,7 +63,7 @@ $img_out_path = $cache->getOrCreateFile($img_out,
     function($cached_file){
         // resize image
         global $img_out_size, $img_src_path;
-        $command = "convert -filter Lanczos -background none -interlace line -resize "
+        $command = "convert -filter Lanczos -background none -resize "
             . escapeshellarg($img_out_size) ." "
             . escapeshellarg($img_src_path) . " " 
             . escapeshellarg($cached_file);
