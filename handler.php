@@ -63,7 +63,7 @@ $img_out_path = $cache->getOrCreateFile($img_out,
     function($cached_file){
         // resize image
         global $img_out_size, $img_src_path;
-        $command = "convert -filter Lanczos -background none -resize "
+        $command = "convert -filter Lanczos -background none -interlace line -resize "
             . escapeshellarg($img_out_size) ." "
             . escapeshellarg($img_src_path) . " " 
             . escapeshellarg($cached_file);
