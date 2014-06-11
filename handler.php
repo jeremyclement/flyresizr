@@ -8,6 +8,12 @@ include_once("includes/http.php");
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();*/
 
+//default config
+$cache_dir = $_SERVER['DOCUMENT_ROOT']."/.flyresizr-cache/";
+$cache_prefix_size = 2;
+$cache_drop_delay = 30;
+$img_quality = 90;
+$img_minsize = 1000;
 include_once("config.php");
 
 function printImage($path){
@@ -58,13 +64,15 @@ $cache->setPrefixSize($cache_prefix_size);
 // get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
     array(
-        'younger-than' => $img_src_path
+        'younger-than' => $img_src_path,
+        'min-size'  =>  $img_minsize
     ),
     function($cached_file){
         // resize image
-        global $img_out_size, $img_src_path;
-        $command = "convert -filter Lanczos -background none -resize "
-            . escapeshellarg($img_out_size) ." "
+        global $img_out_size, $img_src_path, $img_quality;
+        $command = "convert -filter Lanczos -background none "
+            . "-quality " . $img_quality ." "
+            . "-resize " . escapeshellarg($img_out_size) ." "
             . escapeshellarg($img_src_path) . " " 
             . escapeshellarg($cached_file);
         return exec($command);
