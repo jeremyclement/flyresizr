@@ -4,9 +4,9 @@ include_once("includes/http.php");
 @include_once("../../autoload.php");
 
 // set pretty debug
-/*$whoops = new \Whoops\Run;
+$whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();*/
+$whoops->register();
 
 include_once("config.php");
 
@@ -49,8 +49,8 @@ if(!is_file($img_src_path)){
 }
 
 // set cache
-$cache = new \Gregwar\Cache\Cache;
 $old = umask(0002);
+$cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize($cache_prefix_size);
 
