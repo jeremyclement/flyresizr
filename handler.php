@@ -17,8 +17,8 @@ $img_minsize = 1000;
 include_once("config.php");
 
 function printImage($path){
-    if(!is_file($path)){
-        return FALSE;
+    if(!is_file($path) || filesize($path) <= 0){
+        return 0;
     }
     $buffer = file_get_contents($path);
     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -43,7 +43,7 @@ $img_src_dir = $matches[1];
 // check if image already exists
 $img_out = "$img_src_name-$img_out_size.$img_out_ext";
 $img_local_path = $_SERVER['DOCUMENT_ROOT'] . "/$img_src_dir$img_out";
-if(printImage($img_local_path)){
+if(printImage($img_local_path) > 0){
     exit(0);
 }
 
@@ -60,7 +60,8 @@ $cache = new \Gregwar\Cache\Cache;
 $cache->setCacheDirectory($cache_dir);
 $cache->setPrefixSize($cache_prefix_size);
 
-// change umask for 775 directories rights
+$exec_return = null;
+
 // get cache or convert 
 $img_out_path = $cache->getOrCreateFile($img_out,
     array(
@@ -69,19 +70,25 @@ $img_out_path = $cache->getOrCreateFile($img_out,
     ),
     function($cached_file){
         // resize image
-        global $img_out_size, $img_src_path, $img_quality;
+        global $img_out_size, $img_src_path, $img_quality, $exec_return;
         $command = "convert -filter Lanczos -background none "
             . "-quality " . $img_quality ." "
             . "-resize " . escapeshellarg($img_out_size) ." "
             . escapeshellarg($img_src_path) . " " 
             . escapeshellarg($cached_file);
-        return exec($command);
+        $exec_return = array(
+            'command' => $command,
+            'code' => 0, 
+            'msg' => array ()
+        );
+        return exec($command . " 2>&1", $exec_return['msg'], $exec_return['code']);
     });
 umask($old);
 
 // return image
-if(!printImage($img_out_path)){
-    http_exit_message(500,"unable to convert '$img_src' to '$img_out'",false);
+if(printImage($img_out_path) <= 0 || $exec_return['code']){
+    unlink($img_out_path);
+    http_exit_message(500,"unable to convert '$img_src' to '$img_out'.\n\n Output : " . print_r ( $exec_return, true ),false);
 }
 
 ob_flush();
